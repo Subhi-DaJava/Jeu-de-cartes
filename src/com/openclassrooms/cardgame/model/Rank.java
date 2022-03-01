@@ -13,10 +13,10 @@ public enum Rank {
     JACK(11),
     QUEEN(12),
     KING(13),
-    AS(14);
+    AS(14); // mettre ";"
 
     int rank;
-
+    //constructor
     Rank(int value) {
         rank = value;
     }

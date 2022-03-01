@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class View {
     GameController controller;
     Scanner keyboard = new Scanner(System.in);
+
     public void setController(GameController gc){
         this.controller = gc;
     }

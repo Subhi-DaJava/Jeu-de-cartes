@@ -1,5 +1,8 @@
 package com.openclassrooms.cardgame.model;
 
+/**
+ * une valeur, une couleur et un flag indiquant si la carte est face visible ou cachée.
+ */
 public class PlayingCard {
     private Rank rank;
     private Suit suit;
@@ -21,6 +24,7 @@ public class PlayingCard {
         this.rank = rank;
         this.suit = suit;
     }
+    //retourner les cartes
     public boolean flip(){
         faceUp = !faceUp;
         return faceUp;
