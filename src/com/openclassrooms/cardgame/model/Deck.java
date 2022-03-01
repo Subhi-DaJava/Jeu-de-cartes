@@ -9,7 +9,7 @@ public class Deck {
         //enum methode values() transfer all elements in an ArrayList
         for(Rank rank : Rank.values()){
             for (Suit suit : Suit.values()){
-                System.out.println("Creating card ["+rank+"]+["+suit+"]");
+                System.out.println("Creating card ["+rank+"]["+suit+"]");
                 cards.add(new PlayingCard(rank,suit));
             }
         }

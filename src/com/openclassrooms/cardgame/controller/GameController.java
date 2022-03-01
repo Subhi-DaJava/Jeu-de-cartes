@@ -1,12 +1,16 @@
 package com.openclassrooms.cardgame.controller;
 
-import com.openclassrooms.cardgame.games.GameEvaluator;
+import com.openclassrooms.cardgame.games.LowCardGameEvaluator;
 import com.openclassrooms.cardgame.model.Deck;
 import com.openclassrooms.cardgame.model.Player;
 import com.openclassrooms.cardgame.model.PlayingCard;
-import com.openclassrooms.cardgame.view.View;
+import com.openclassrooms.cardgame.view.CommandLineView;
+import com.openclassrooms.cardgame.view.GameViewable;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+
 /**
  * •	Créer le jeu.
  * •	Entrer les noms des joueurs.
@@ -26,18 +30,20 @@ public class GameController {
     }
     Deck deck;
     List<Player> players;
-    View view; //la vue
+    GameViewable view; //la vue
     Player winner;
     GameState gameState;
+    LowCardGameEvaluator gameEvaluator;
 
     //Le contrôleur instancie les objets essentiels au démarrage du jeu. Il s'agit du jeu de cartes et d'une liste vide de joueurs.
     // Il doit également avoir connaissance de la vue.
-    public GameController(Deck deck, View view) {
+    public GameController(Deck deck, GameViewable view, LowCardGameEvaluator gameEvaluator) {
         this.deck = deck;
         this.view = view;
         this.players = new ArrayList<>();
         this.gameState = GameState.AddingPlayers;
         view.setController(this); //La vue doit être créée ailleurs et transmise au contrôleur au lieu d'être créée par le contrôleur lui-même.
+        this.gameEvaluator = gameEvaluator;
     }
     public void run(){
         while (gameState == GameState.AddingPlayers){
@@ -70,6 +76,7 @@ public class GameController {
             }
             gameState = GameState.CardsDealt;
         }
+
         this.run();
     }
     public void flipCards(){
@@ -79,7 +86,7 @@ public class GameController {
             //Le contrôleur retourne la carte de chaque joueur, puis calcule le gagnant.
             pc.flip();
             //Il demande à la vue de présenter l'état du jeu, qui comprend à présent le nom du gagnant !
-            view.showFaceDownCardForPlayer(playerIndex++,player.getName(),pc.getRank().toString(),pc.getSuit().toString());
+            view.showCardForPlayer(playerIndex++,player.getName(),pc.getRank().toString(),pc.getSuit().toString());
         }
         evaluateWinner();
         displayWinner();
@@ -89,7 +96,7 @@ public class GameController {
         this.run();
     }
     public void evaluateWinner(){
-     winner = new GameEvaluator().evaluateWinner(players);
+     winner = gameEvaluator.evaluateWinner(players);
     }
     public void displayWinner(){
         view.showWinner(winner.getName());
@@ -100,4 +107,15 @@ public class GameController {
             deck.returnCardToDeck(player.removeCard());
         }
     }
+    public void exitGame(){
+        System.exit(0);
+    }
+    public void nextAction(String nextChoice) {
+        if("+q".equals(nextChoice)){
+            exitGame();
+        }else {
+            startGame();
+        }
+    }
+
 }
