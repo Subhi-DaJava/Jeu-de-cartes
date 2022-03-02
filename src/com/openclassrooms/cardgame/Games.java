@@ -2,7 +2,7 @@ package com.openclassrooms.cardgame;
 
 import com.openclassrooms.cardgame.controller.GameController;
 import com.openclassrooms.cardgame.games.LowCardGameEvaluator;
-import com.openclassrooms.cardgame.model.Deck;
+import com.openclassrooms.cardgame.model.DeckFactory;
 import com.openclassrooms.cardgame.view.CommandLineView;
 import com.openclassrooms.cardgame.view.GameSwingView;
 
@@ -11,7 +11,7 @@ public class Games {
         GameSwingView gsv = new GameSwingView();
         gsv.createAndShowGUI();
         //GameController gameController = new GameController(new Deck(),new View(), new HighCardGameEvaluator());
-        GameController gameController = new GameController(new Deck(), gsv, new LowCardGameEvaluator());
+        GameController gameController = new GameController(DeckFactory.makeDeck(DeckFactory.DeckType.Test), gsv, new LowCardGameEvaluator());
         gameController.run();
     }
 
