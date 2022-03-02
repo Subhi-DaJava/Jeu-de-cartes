@@ -1,15 +1,11 @@
 package com.openclassrooms.cardgame.controller;
 
 import com.openclassrooms.cardgame.games.LowCardGameEvaluator;
-import com.openclassrooms.cardgame.model.Deck;
-import com.openclassrooms.cardgame.model.Player;
-import com.openclassrooms.cardgame.model.PlayingCard;
-import com.openclassrooms.cardgame.view.CommandLineView;
+import com.openclassrooms.cardgame.model.*;
 import com.openclassrooms.cardgame.view.GameViewable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * •	Créer le jeu.
@@ -29,9 +25,9 @@ public class GameController {
         AddingPlayers, CardsDealt, WinnerRevealed
     }
     Deck deck;
-    List<Player> players;
+    List<IPlayer> players;
     GameViewable view; //la vue
-    Player winner;
+    IPlayer winner;
     GameState gameState;
     LowCardGameEvaluator gameEvaluator;
 
@@ -68,7 +64,7 @@ public class GameController {
         if (gameState != GameState.CardsDealt){
             deck.shuffle();
             int playerIndex = 1;
-            for (Player player : players){
+            for (IPlayer player : players){
                 ////Le contrôleur mélange les cartes et prend la première carte pour la donner à un joueur.
                 player.addCardToHand(deck.removeTopCard());
                 //Il demande ensuite à la vue de présenter l'état du jeu.
@@ -81,7 +77,7 @@ public class GameController {
     }
     public void flipCards(){
         int playerIndex = 1;
-        for (Player player : players){
+        for (IPlayer player : players){
             PlayingCard pc = player.getCard(0); //chaque joueur détient une seule carte
             //Le contrôleur retourne la carte de chaque joueur, puis calcule le gagnant.
             pc.flip();
@@ -96,14 +92,14 @@ public class GameController {
         this.run();
     }
     public void evaluateWinner(){
-     winner = gameEvaluator.evaluateWinner(players);
+     winner = new WinningPlayer(gameEvaluator.evaluateWinner(players));
     }
     public void displayWinner(){
         view.showWinner(winner.getName());
     }
     ////Les mains des joueurs sont ramassées et replacées dans le paquet de cartes.
     public void rebuildDeck(){
-        for (Player player : players){
+        for (IPlayer player : players){
             deck.returnCardToDeck(player.removeCard());
         }
     }
