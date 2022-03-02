@@ -11,7 +11,7 @@ public class Games {
         GameSwingView gsv = new GameSwingView();
         gsv.createAndShowGUI();
         //GameController gameController = new GameController(new Deck(),new View(), new HighCardGameEvaluator());
-        GameController gameController = new GameController(DeckFactory.makeDeck(DeckFactory.DeckType.Test), gsv, new LowCardGameEvaluator());
+        GameController gameController = new GameController(DeckFactory.makeDeck(DeckFactory.DeckType.Normal), gsv, new LowCardGameEvaluator());
         gameController.run();
     }
 
